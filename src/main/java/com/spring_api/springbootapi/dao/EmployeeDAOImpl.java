@@ -21,16 +21,19 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
 
-    public List<Employee> getAllEmployees() {
-        Session session = entityManager.unwrap(Session.class);
-
-
-        Query<Employee> query = session.createQuery("from Employee", Employee.class);
+    
+     Query<Employee> query = session.createQuery("from Employee", Employee.class);
+//    List<Employee> allEmployees = query.getResultList();
         List<Employee> allEmployees = query.getResultList();
+        return allEmployees.isEmpty()
+                ? Collections.emptyList() : allEmployees.stream()
+                .sorted((t1, t2) -> String.CASE_INSENSITIVE_ORDER.compare(t1.getName(),t2.getName()))
+                .collect(Collectors.toList());
 
 
 
-        return allEmployees;
+
+//        return allEmployees;
     }
 
     @Override
